@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2017",                     // Versión de JavaScript a compilar
+    "module": "commonjs",                // Módulo para Node.js
+    "rootDir": "./src",                  // Carpeta de los archivos TypeScript
+    "outDir": "./dist",                  // Carpeta donde se generarán los archivos JS
+    "strict": true,                      // Habilita verificaciones estrictas
+    "esModuleInterop": true,             // Habilita la interoperabilidad con módulos ES6
+    "forceConsistentCasingInFileNames": true, // Consistencia en nombres de archivos
+    "skipLibCheck": true                 // Evita verificar tipos de archivos .d.ts
+  },
+  "include": ["src"],                    // Archivos a compilar
+  "exclude": ["node_modules"]            // Archivos/carpetas a ignorar
+}
