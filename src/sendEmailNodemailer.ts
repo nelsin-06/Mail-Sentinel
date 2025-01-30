@@ -57,7 +57,7 @@ export class SendEmailNodemailer {
       const accessToken = await this.getAccessToken(oAuth2Client);
       return await this.sendMailNodemailer(accessToken);
     } catch (error) {
-      logger.error("PROCESS TO SEND EMAIL BY NODEMAILER");
+      logger.error("PROCESS TO SEND AN EMAIL BY NODEMAILER");
       logger.error(error);
     }
   }
