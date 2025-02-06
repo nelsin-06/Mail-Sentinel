@@ -1,32 +1,20 @@
 import nodemailer, { TransportOptions } from "nodemailer";
-import { google } from "googleapis";
 import { envVars } from "./config/env";
 import logger from "./utils/logger";
+import { GoogleAuthService } from "./services";
 
 export class SendEmailNodemailer {
+  private MAIN_EMAIL: string = envVars.MAIN_EMAIL;
   private CLIENT_ID: string = envVars.GOOGLE_CLIENT_ID;
   private CLIENT_SECRET: string = envVars.GOOGLE_CLIENT_SECRET;
-  private REDIRECT_URI: string = envVars.GOOGLE_REDIRECT_URI;
   private REFRESH_TOKEN: string = envVars.GOOGLE_REFRESH_TOKEN;
-  private MAIN_EMAIL: string = envVars.MAIN_EMAIL;
+  private googleAuthService: GoogleAuthService;
 
-  setCredencials() {
-    const oAuth2Client = new google.auth.OAuth2(
-      this.CLIENT_ID,
-      this.CLIENT_SECRET,
-      this.REDIRECT_URI
-    );
-    oAuth2Client.setCredentials({ refresh_token: this.REFRESH_TOKEN });
-
-    return oAuth2Client;
+  constructor() {
+    this.googleAuthService = new GoogleAuthService();
   }
 
-  async getAccessToken(oAuth2Client: any) {
-    const accessToken = await oAuth2Client.getAccessToken();
-    return accessToken;
-  }
-
-  async sendMailNodemailer(accessToken: string) {
+  async sendMailNodemailer(accessToken: any) {
     const transport = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -53,8 +41,8 @@ export class SendEmailNodemailer {
 
   async sendEmail() {
     try {
-      const oAuth2Client = this.setCredencials();
-      const accessToken = await this.getAccessToken(oAuth2Client);
+      const accessToken = await this.googleAuthService.getAccessToken();
+
       return await this.sendMailNodemailer(accessToken);
     } catch (error) {
       logger.error("PROCESS TO SEND AN EMAIL BY NODEMAILER");
